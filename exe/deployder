@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+require 'thor'
+require 'net/ssh'
+
+module Deployder
+	## CLI for Deployder
+	class CLI < Thor
+		desc 'deploy HOST FILE', 'Deploy to HOST by instructions from FILE'
+		def setup(host, file)
+			Net::SSH.start(host) do |conn|
+				# require 'pry'; binding.pry
+				puts conn.exec! 'echo lol'
+			end
+		end
+	end
+end
+
+Deployder::CLI.start
