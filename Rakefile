@@ -1,7 +1,11 @@
-require 'bundler/gem_tasks'
+# frozen_string_literal: true
 
-task :spec do
-	sh 'bacon -a'
+begin
+	require 'rspec/core/rake_task'
+
+	RSpec::Core::RakeTask.new(:spec)
+
+	task default: :spec
+rescue LoadError
+	puts 'No RSpec available'
 end
-
-task default: :spec

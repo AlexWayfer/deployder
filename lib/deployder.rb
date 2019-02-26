@@ -1,1 +1,3 @@
-require 'deployder/version'
+# frozen_string_literal: true
+
+require 'deployder/connection'

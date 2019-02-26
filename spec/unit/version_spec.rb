@@ -1,8 +1,6 @@
-describe 'Deployder::VERSION' do
-	subject = Deployder::VERSION
+# frozen_string_literal: true
 
-	it 'should be not empty String' do
-		subject.should.be.instance_of String
-		subject.should.not.be.empty
-	end
+describe Deployder::VERSION do
+	it { is_expected.to be_instance_of String }
+	it { is_expected.not_to be_empty }
 end

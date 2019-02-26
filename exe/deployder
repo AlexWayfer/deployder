@@ -1,18 +1,31 @@
 #!/usr/bin/env ruby
-require 'thor'
+
+# frozen_string_literal: true
+
+require 'clamp'
 require 'net/ssh'
+require 'yaml'
 
 module Deployder
 	## CLI for Deployder
-	class CLI < Thor
-		desc 'deploy HOST FILE', 'Deploy to HOST by instructions from FILE'
-		def setup(host, file)
-			Net::SSH.start(host) do |conn|
-				# require 'pry'; binding.pry
-				puts conn.exec! 'echo lol'
+	class CLI < Clamp::Command
+		subcommand 'setup', 'Deploy to HOST by instructions from FILE' do
+			parameter 'HOST', 'target host'
+			parameter 'FILE', 'source file'
+			def execute
+				Net::SSH.start(host) do |ssh|
+					yaml = YAML.safe_load File.read Dir["deploy/#{file}{,.y{a,}ml}"].first
+					yaml.each do |command, arguments|
+						result_command = "#{command} #{arguments}"
+						puts result_command
+						puts ssh.exec! result_command
+					end
+				end
 			end
 		end
 	end
 end
 
-Deployder::CLI.start
+return unless $PROGRAM_NAME == __FILE__
+
+Deployder::CLI.run
